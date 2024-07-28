@@ -1,19 +1,29 @@
+import { CheckboxZod } from "@/components/checkbox";
+import { Input } from "@/components/input";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Head from "next/head";
 import {useForm} from 'react-hook-form'
+import {z} from 'zod'
 
-type LoginFields = {
-    email: string
-    password: string
-    rememberMe: boolean
-}
+
+const loginSchema = z.object({
+    email: z.string().email(),
+    password: z.string().min(3),
+    rememberMe: z.string(),
+})
+
+type LoginFields = z.infer<typeof loginSchema>
 
 const emailRegex =
   /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/
 
 export default function Login() {
 
-    const {register, handleSubmit, formState: {errors}} = useForm<LoginFields>();
+    const {register, handleSubmit, formState: {errors}} = useForm<LoginFields>({
+        resolver: zodResolver(loginSchema)
+    });
 
+    console.log(errors)
     const onSubmit = handleSubmit(data => {
         console.log(data)
     })
@@ -25,24 +35,17 @@ export default function Login() {
         <form onSubmit={onSubmit}>
             <div>
                 <label htmlFor="email">E-Mail</label>
-                <input id="email" type="email" {...register('email', {
-                    pattern: emailRegex,
-                    minLength: 1,
-                    required: 'Email is required'
-                })}/>
-                {errors.email?.message && <div className="text-red-500">{errors.email?.message}</div>}
+                <Input id="email" type="email" {...register('email')}/>
+                {errors.email?.message && <p style={{color: 'red'}}>{errors.email?.message}</p>}
             </div>
             <div>
                 <label htmlFor="password">Password</label>
-                <input id="password" type="password" {...register('password', {
-                    minLength: 3,
-                    required: 'Password is required'
-                })}/>
-                {errors.password?.message && <p className="text-red-500">{errors.password?.message}</p>}
+                <Input id="password" type="password" {...register('password')}/>
+                {errors.password?.message && <p style={{color: 'red'}}>{errors.password?.message}</p>}
             </div> 
             <div>
                 <label htmlFor="rememberMe">Remember Me</label>
-                <input id="rememberMe" type="checkbox" {...register('rememberMe')}/>
+                <CheckboxZod id="rememberMe" {...register('rememberMe')}/>
             </div> 
             <button>Send</button>
     </form>
