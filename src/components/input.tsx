@@ -1,10 +1,21 @@
-import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
+import { ComponentPropsWithoutRef, ElementRef, forwardRef, useId } from "react"
 
-type InputProps = ComponentPropsWithoutRef<'input'>
+type InputProps = ComponentPropsWithoutRef<'input'> & {
+    errorMessage?: string
+    label?: string
+}
 
-export const Input = forwardRef<ElementRef<'input'>, InputProps>(({className, ...props}, ref) => {
+export const Input = forwardRef<ElementRef<'input'>, InputProps>(({className, label, errorMessage, id, ...props}, ref) => {
+
+    const generatedId = useId()
+    const finalId = id ?? generatedId
+
     return (
-        <input style={{borderRadius: '5px'}} {...props} ref={ref}/>
+        <div>
+            {!!label && <label htmlFor={finalId}>{label}</label>}
+            <input style={{borderRadius: '5px'}} {...props} id={finalId} ref={ref}/>
+            {!!errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
+        </div>
     )
 })
 
