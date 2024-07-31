@@ -27,7 +27,9 @@ function Content() {
       <nav>
         <Link href={'/auth/login'}>Click me to login</Link>
       </nav>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <div>
+        {data?.}
+      </div>
     </div>
   )
 }
