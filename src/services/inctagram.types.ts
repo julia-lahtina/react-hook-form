@@ -1,4 +1,4 @@
-export interface RootInterface {
+export interface GetPostsResponse {
     totalCount: number;
     pageSize: number;
     items: Item[];

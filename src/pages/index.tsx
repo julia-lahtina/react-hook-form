@@ -28,7 +28,18 @@ function Content() {
         <Link href={'/auth/login'}>Click me to login</Link>
       </nav>
       <div>
-        {data?.}
+        {data?.items?.map(post => {
+          return (
+            <div key={post.id}>
+              <img src={post.images[0].url} />
+              <div>
+                <img src={post.avatarOwner} />
+                <div>{post.userName}</div>
+              </div>
+              <div><time>{new Date(post.createdAt).toLocaleDateString()}</time></div>
+            </div>
+          )
+        })}
       </div>
     </div>
   )
