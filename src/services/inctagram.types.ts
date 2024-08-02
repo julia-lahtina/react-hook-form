@@ -4,6 +4,10 @@ export interface GetPostsResponse {
     items: Item[];
     totalUsers: number;
   }
+
+  export interface GetPostsArgs {
+    pageSize: number
+  }
   
   export interface Item {
     id: number;
