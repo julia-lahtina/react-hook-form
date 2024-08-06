@@ -9,7 +9,7 @@ export const inctagramService = createApi({
     getPublicPosts: builder.query<GetPostsResponse, GetPostsArgs>({
       query: ({pageSize}) => {
         return {
-          url: 'v1/public-posts/all/',
+          url: 'v1/public-posts/all',
           params: {
             pageSize,
             sortBy: 'createdAt',
